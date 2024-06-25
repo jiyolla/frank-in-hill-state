@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 @Component
 @RequiredArgsConstructor
-public class MyWallet {
+public class MyWalletQuery {
     private final SpotClientImpl spotClientImpl;
 
     public String getAssets() {

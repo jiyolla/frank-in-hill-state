@@ -24,7 +24,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class Market {
+public class MarketQuery {
     private final SpotClientImpl spotClientImpl;
 
     public String getCurrentPrice(String symbol) {
@@ -33,6 +33,7 @@ public class Market {
         return spotClientImpl.createMarket().tickerSymbol(parameters);
     }
 
+    // TODO - [24-06-25][frank.burger]: 파라미터 다양화할 것
     public String getRSI(String symbol) {
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("symbol", symbol);
