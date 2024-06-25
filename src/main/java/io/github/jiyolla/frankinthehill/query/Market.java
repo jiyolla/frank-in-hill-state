@@ -24,7 +24,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class Market implements Query {
+public class Market {
     private final SpotClientImpl spotClientImpl;
 
     public String getCurrentPrice(String symbol) {
