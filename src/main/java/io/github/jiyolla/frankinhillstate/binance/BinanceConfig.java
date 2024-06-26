@@ -1,4 +1,4 @@
-package io.github.jiyolla.frankinthehill.binance;
+package io.github.jiyolla.frankinhillstate.binance;
 
 import com.binance.connector.client.impl.SpotClientImpl;
 import lombok.Getter;

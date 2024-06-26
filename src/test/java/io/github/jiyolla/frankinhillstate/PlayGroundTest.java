@@ -1,10 +1,10 @@
-package io.github.jiyolla.frankinthehill;
+package io.github.jiyolla.frankinhillstate;
 
 import com.binance.connector.client.impl.SpotClientImpl;
 import com.binance.connector.client.impl.spot.Wallet;
-import io.github.jiyolla.frankinthehill.command.MarketCommand;
-import io.github.jiyolla.frankinthehill.query.MarketQuery;
-import io.github.jiyolla.frankinthehill.query.MyWalletQuery;
+import io.github.jiyolla.frankinhillstate.command.MarketCommand;
+import io.github.jiyolla.frankinhillstate.query.MarketQuery;
+import io.github.jiyolla.frankinhillstate.query.MyWalletQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

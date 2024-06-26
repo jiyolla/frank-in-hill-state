@@ -1,4 +1,4 @@
-package io.github.jiyolla.frankinthehill.agent;
+package io.github.jiyolla.frankinhillstate.agent;
 
 import java.time.LocalDateTime;
 

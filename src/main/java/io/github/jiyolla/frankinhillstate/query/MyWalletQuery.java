@@ -1,4 +1,4 @@
-package io.github.jiyolla.frankinthehill.query;
+package io.github.jiyolla.frankinhillstate.query;
 
 import com.binance.connector.client.impl.SpotClientImpl;
 import com.binance.connector.client.impl.spot.Trade;

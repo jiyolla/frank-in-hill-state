@@ -1,4 +1,4 @@
-package io.github.jiyolla.frankinthehill;
+package io.github.jiyolla.frankinhillstate;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
