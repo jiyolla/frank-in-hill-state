@@ -1,21 +1,25 @@
 package io.github.jiyolla.frankinhillstate.backtesting.simple.query;
 
+import io.github.jiyolla.frankinhillstate.backtesting.simple.Wallet;
+
 /**
  * {@link io.github.jiyolla.frankinhillstate.backtesting.simple.command.GuaranteedSuccessMarketCommand}와 연동되어야 함
  */
 public class MyWalletQuery extends io.github.jiyolla.frankinhillstate.query.MyWalletQuery {
+    private final Wallet wallet;
 
-    public MyWalletQuery() {
+    public MyWalletQuery(Wallet wallet) {
         super(null);
+        this.wallet = wallet;
     }
 
     @Override
     public String getAssets() {
-        throw new UnsupportedOperationException("not implemented");
+        return wallet.getAssets().toString();
     }
 
     @Override
     public String getTrades(String symbol) {
-        throw new UnsupportedOperationException("not implemented");
+        return wallet.getTrades().toString();
     }
 }
