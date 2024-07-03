@@ -13,8 +13,9 @@ public class MarketCommand {
     private final SpotClientImpl spotClientImpl;
 
     // TODO - [24-06-25][frank.burger]: 구매 방식이 매우 많음
+    //  order를 만드는 것과 order가 성사되는 것을 구분할 수 있는데, 복잡해져서 FOK로 반드시 성공하는 order만 일단 사용
     // https://binance-docs.github.io/apidocs/spot/en/#new-order-trade
-    public String placeBuyOrder(String symbol, BigDecimal quantity, BigDecimal price) {
+    public String buy(String symbol, BigDecimal quantity, BigDecimal price) {
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("symbol", symbol);
         parameters.put("side", "BUY");
@@ -25,7 +26,7 @@ public class MarketCommand {
         return spotClientImpl.createTrade().newOrder(parameters);
     }
 
-    public String placeSellOrder(String symbol, BigDecimal quantity, BigDecimal price) {
+    public String sell(String symbol, BigDecimal quantity, BigDecimal price) {
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("symbol", symbol);
         parameters.put("side", "SELL");

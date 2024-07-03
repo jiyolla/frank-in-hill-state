@@ -1,12 +1,10 @@
 package io.github.jiyolla.frankinhillstate.backtesting.simple.command;
 
+import io.github.jiyolla.frankinhillstate.backtesting.simple.Trade;
 import io.github.jiyolla.frankinhillstate.backtesting.simple.Wallet;
 import io.github.jiyolla.frankinhillstate.command.MarketCommand;
 
 import java.math.BigDecimal;
-
-import static io.github.jiyolla.frankinhillstate.backtesting.simple.Trade.buy;
-import static io.github.jiyolla.frankinhillstate.backtesting.simple.Trade.sell;
 
 /**
  * buy and sell order always success regardless of the market condition
@@ -22,14 +20,14 @@ public class GuaranteedSuccessMarketCommand extends MarketCommand {
     }
 
     @Override
-    public String placeBuyOrder(String symbol, BigDecimal quantity, BigDecimal price) {
-        wallet.addTrade(buy(symbol, price, quantity));
+    public String buy(String symbol, BigDecimal quantity, BigDecimal price) {
+        wallet.addTrade(Trade.buy(symbol, price, quantity));
         return "success";
     }
 
     @Override
-    public String placeSellOrder(String symbol, BigDecimal quantity, BigDecimal price) {
-        wallet.addTrade(sell(symbol, price, quantity));
+    public String sell(String symbol, BigDecimal quantity, BigDecimal price) {
+        wallet.addTrade(Trade.sell(symbol, price, quantity));
         return "success";
     }
 }

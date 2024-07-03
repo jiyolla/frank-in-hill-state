@@ -46,7 +46,7 @@ class PlayGroundTest {
     @Test
     void test2() {
         // TODO - [24-06-25][frank.burger]: Min notional를 넘고, FOK로 expire하도록 가격을 설정해둠. 실제 거래를 시도하기에 가격 확인하고 조심히 실행할 것
-        log.info(marketCommand.placeSellOrder("TRXUSDT", new BigDecimal(25), new BigDecimal("0.2")));
-        log.info(marketCommand.placeBuyOrder("TRXUSDT", new BigDecimal(50), new BigDecimal("0.1")));
+        log.info(marketCommand.sell("TRXUSDT", new BigDecimal(25), new BigDecimal("0.2")));
+        log.info(marketCommand.buy("TRXUSDT", new BigDecimal(50), new BigDecimal("0.1")));
     }
 }
