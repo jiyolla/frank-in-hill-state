@@ -11,13 +11,12 @@ import org.ta4j.core.BarSeries;
 import org.ta4j.core.BaseBar;
 import org.ta4j.core.BaseBarSeries;
 import org.ta4j.core.indicators.RSIIndicator;
+import org.ta4j.core.indicators.SMAIndicator;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.num.Num;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.math.BigDecimal;
+import java.time.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +30,35 @@ public class MarketQuery {
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("symbol", symbol);
         return spotClientImpl.createMarket().tickerSymbol(parameters);
+    }
+
+    /**
+     * Simple Moving Average
+     *
+     * @param symbol
+     * @param interval 간격
+     * @param period   interval의 개수
+     * @param at       at을 포함한 마지막 interval까지 가져옴
+     * @return
+     */
+    public BigDecimal getSMA(String symbol, String interval, int period, LocalDateTime at) {
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("symbol", symbol);
+        // startTime, endTime 모두 klineOpenTime에 대한 적용
+        // 추가적으로 interval은 startTime, endTime과 무관함. 이미 정해진 그리드의 interval를 그리는 것
+        //  e.g. endTime기준으로 interval텀을 두는 것이 아니라, 정각 기준의 interval 데이터는 이미 만들어졌고, 어느 데이터를 가져올지를 startTime, endTime로 조정할 뿐 
+        parameters.put("endTime", at.toInstant(ZoneOffset.ofHours(9)).toEpochMilli());
+        parameters.put("interval", interval);
+        parameters.put("limit", period);
+
+        String klinesData = spotClientImpl.createMarket().klines(parameters);
+        BarSeries series = parseKlines(klinesData);
+
+        ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
+        SMAIndicator sma = new SMAIndicator(closePrice, period);
+        Num latestSma = sma.getValue(series.getEndIndex());
+
+        return new BigDecimal(latestSma.toString());
     }
 
     // TODO - [24-06-25][frank.burger]: 파라미터 다양화할 것
@@ -74,8 +102,8 @@ public class MarketQuery {
             return series;
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Failed to parse klines data");
         }
-        return null;
     }
 
     @Value

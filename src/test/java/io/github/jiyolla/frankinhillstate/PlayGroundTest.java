@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 @Slf4j
@@ -37,6 +38,8 @@ class PlayGroundTest {
 
         log.info(marketQuery.getCurrentPrice("BTCUSDT"));
         log.info(marketQuery.getRSI("BTCUSDT"));
+        log.info(
+                marketQuery.getSMA("BTCUSDT", "1h", 20, LocalDateTime.of(2024, 7, 6, 12, 0).plusSeconds(1)).toString());
 
         log.info(myWalletQuery.getTrades("BTCUSDT"));
         log.info(myWalletQuery.getAssets());
