@@ -1,6 +1,5 @@
 package io.github.jiyolla.frankinhillstate.backtesting.simple.command;
 
-import io.github.jiyolla.frankinhillstate.backtesting.simple.Trade;
 import io.github.jiyolla.frankinhillstate.backtesting.simple.Wallet;
 import io.github.jiyolla.frankinhillstate.command.MarketCommand;
 
@@ -21,13 +20,13 @@ public class GuaranteedSuccessMarketCommand extends MarketCommand {
 
     @Override
     public String buy(String symbol, BigDecimal quantity, BigDecimal price) {
-        wallet.addTrade(Trade.buy(symbol, price, quantity));
+        wallet.buy(symbol, price, quantity);
         return "success";
     }
 
     @Override
     public String sell(String symbol, BigDecimal quantity, BigDecimal price) {
-        wallet.addTrade(Trade.sell(symbol, price, quantity));
+        wallet.sell(symbol, price, quantity);
         return "success";
     }
 }
