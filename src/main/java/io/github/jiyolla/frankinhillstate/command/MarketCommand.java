@@ -18,22 +18,24 @@ public class MarketCommand {
     public String buy(String symbol, BigDecimal quantity, BigDecimal price) {
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("symbol", symbol);
-        parameters.put("side", "BUY");
-        parameters.put("type", "LIMIT");
-        parameters.put("timeInForce", "FOK");
         parameters.put("quantity", quantity);
-        parameters.put("price", price);
+        parameters.put("side", "BUY");
+        parameters.put("type", "MARKET");
+        // parameters.put("type", "LIMIT");
+        // parameters.put("timeInForce", "FOK");
+        // parameters.put("price", price);
         return spotClientImpl.createTrade().newOrder(parameters);
     }
 
     public String sell(String symbol, BigDecimal quantity, BigDecimal price) {
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("symbol", symbol);
-        parameters.put("side", "SELL");
-        parameters.put("type", "LIMIT");
-        parameters.put("timeInForce", "FOK");
         parameters.put("quantity", quantity);
-        parameters.put("price", price);
+        parameters.put("side", "SELL");
+        parameters.put("type", "MARKET");
+        // parameters.put("type", "LIMIT");
+        // parameters.put("timeInForce", "FOK");
+        // parameters.put("price", price);
         return spotClientImpl.createTrade().newOrder(parameters);
     }
 }

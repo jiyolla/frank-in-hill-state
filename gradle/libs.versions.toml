@@ -1,0 +1,26 @@
+[versions]
+binance-connector = "latest.release"
+ta4j = "latest.release"
+freefair = "latest.release"
+jackson-databind = "latest.release"
+spring-boot = "latest.release"
+spring-dependency-management = "latest.release"
+
+
+
+[libraries]
+binance-connector = { module = "io.github.binance:binance-connector-java", version.ref = "binance-connector" }
+ta4j = { module = "org.ta4j:ta4j-core", version.ref = "ta4j" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind" }
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+
+
+[bundles]
+
+
+[plugins]
+my-convention = { id = "my-convention" }
+lombok = { id = "io.freefair.lombok", version.ref = "freefair" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }

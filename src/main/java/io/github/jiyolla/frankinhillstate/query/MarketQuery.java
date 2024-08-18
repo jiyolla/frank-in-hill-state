@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.stereotype.Component;
+import org.ta4j.core.Bar;
 import org.ta4j.core.BarSeries;
 import org.ta4j.core.BaseBar;
 import org.ta4j.core.BaseBarSeries;
@@ -79,17 +80,77 @@ public class MarketQuery {
         return "Latest RSI value for " + symbol + ": " + latestRsi;
     }
 
+    public Bar getBar(String symbol, String interval, LocalDateTime at) {
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("symbol", symbol);
+        parameters.put("interval", interval);
+        parameters.put("endTime", at.toInstant(ZoneOffset.ofHours(9)).toEpochMilli());
+        parameters.put("limit", 1);
+
+        String klinesData = spotClientImpl.createMarket().klines(parameters);
+        return parseKlines(klinesData).getBar(0);
+    }
+
+    public BarSeries getBarsFrom(String symbol, String interval, int period, LocalDateTime from) {
+        long startTime = from.toInstant(ZoneOffset.ofHours(9)).toEpochMilli();
+        BarSeries allBars = new BaseBarSeries();
+
+        while (period > 0) {
+            int fetchLimit = Math.min(period, 1000);
+
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("symbol", symbol);
+            parameters.put("interval", interval);
+            parameters.put("startTime", startTime);
+            parameters.put("limit", fetchLimit);
+
+            String klinesData = spotClientImpl.createMarket().klines(parameters);
+            BarSeries bars = parseKlines(klinesData);
+
+            if (bars.isEmpty()) {
+                break;
+            }
+
+            mergeBars(allBars, bars);
+            period -= bars.getBarCount();
+            startTime = bars.getLastBar().getEndTime().toInstant().toEpochMilli();
+        }
+
+        return allBars;
+    }
+
+    public BarSeries getBars(String symbol, String interval, int period, LocalDateTime at) {
+
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("symbol", symbol);
+        parameters.put("interval", interval);
+        parameters.put("endTime", at.toInstant(ZoneOffset.ofHours(9)).toEpochMilli());
+        parameters.put("limit", period);
+
+        String klinesData = spotClientImpl.createMarket().klines(parameters);
+        return parseKlines(klinesData);
+    }
+
+    private void mergeBars(BarSeries allBars, BarSeries bars) {
+        for (int i = 0; i < bars.getBarCount(); i++) {
+            allBars.addBar(bars.getBar(i));
+        }
+    }
+
     private BarSeries parseKlines(String klinesData) {
+        return parseKlines(klinesData, new BaseBarSeries());
+    }
+
+    private BarSeries parseKlines(String klinesData, BarSeries baseBars) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             List<Kline> klines = Arrays.asList(objectMapper.readValue(klinesData, Kline[].class));
             // List<Kline> klines = objectMapper.readValue(klinesData, new TypeReference<List<Kline>>() {});
 
-            BarSeries series = new BaseBarSeries();
             klines.forEach(kline -> {
                 ZonedDateTime endTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(kline.getKlineCloseTime()),
                                                                 ZoneId.systemDefault());
-                series.addBar(new BaseBar(
+                baseBars.addBar(new BaseBar(
                         Duration.ofHours(1),
                         endTime,
                         kline.getOpenPrice(),
@@ -99,7 +160,7 @@ public class MarketQuery {
                         kline.getVolume()
                 ));
             });
-            return series;
+            return baseBars;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to parse klines data");
@@ -108,7 +169,7 @@ public class MarketQuery {
 
     @Value
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class Kline {
+    public static class Kline {
         Long klineOpenTime;
         String openPrice;
         String highPrice;
