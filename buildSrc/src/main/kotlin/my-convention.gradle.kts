@@ -1,3 +1,8 @@
+import org.gradle.accessors.dm.LibrariesForLibs
+
+val libs = the<LibrariesForLibs>()
+
+
 group = "jiyolla"
 
 repositories {
@@ -13,6 +18,15 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+dependencies {
+    implementation(platform(libs.spring.boot.dependencies))
+    testImplementation(libs.spring.boot.starter.test)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 dependencyLocking {
