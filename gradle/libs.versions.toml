@@ -4,6 +4,7 @@ ta4j = "latest.release"
 freefair = "latest.release"
 jackson-databind = "latest.release"
 spring-boot = "latest.release"
+jib = "latest.release"
 
 
 [libraries]
@@ -22,3 +23,4 @@ spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-star
 my-convention = { id = "my-convention" }
 lombok = { id = "io.freefair.lombok", version.ref = "freefair" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
